@@ -38,18 +38,18 @@ library(zoter)
 ## Will ask you for your userID and API Key
 set_zotero_creds()
 
-# Alternatively you can also set them directly with:
-Sys.getenv("ZOTERO_API_USER" = "XXXXX")
+## Alternatively you can also set them directly with:
+Sys.setenv("ZOTERO_API_USER" = "XXXXX")
 Sys.setenv("ZOTERO_API_KEY" = "XXXXX")
 
-# Download and parse infos for all top-level items in your library (not notes or attachments)
+## Download and parse infos for all top-level items in your library (not notes or attachments)
 items <- get_all_items_top()
 
-# Download and parse infos for all collections in your library
+## Download and parse infos for all collections in your library
 colls <- get_all_collections()
 
 
-# Use req_zotero for more specific queries
+## Use 'req_zotero' for more specific queries
 trash_keys <- req_zotero(query = "items/trash", output = "raw", format = "keys")
 ```
 
