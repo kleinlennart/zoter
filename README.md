@@ -6,6 +6,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
+The goal of {zoter} is to conveniently access the Zotero API v3 from R.
+
 ## Installation
 
 You can install the development version of **{zoter}** like so:
@@ -15,7 +17,9 @@ You can install the development version of **{zoter}** like so:
 devtools::install_github("kleinlennart/zoter")
 ```
 
-## API Example
+## Usage
+
+### Authentication
 
 To access your own private library you will need your **userID** (not
 your username!) and an **API Key**.  
@@ -31,8 +35,12 @@ set_zotero_creds()
 ## Alternatively you can also set them directly with:
 Sys.setenv("ZOTERO_API_USER" = "XXXXX")
 Sys.setenv("ZOTERO_API_KEY" = "XXXXX")
+```
 
-## Download and parse infos for all top-level items in your library (not notes or attachments)
+### Example API Calls
+
+``` r
+## Download and parse infos for all top-level items in your library
 items <- get_all_items_top()
 
 ## Download and parse infos for all collections in your library
@@ -43,9 +51,9 @@ colls <- get_all_collections()
 trash_keys <- req_zotero(query = "items/trash", output = "raw", format = "keys")
 ```
 
-## Cleaning
+### Cleaning
 
-## Analysis
+### Analysis
 
 ``` r
 # Plots
