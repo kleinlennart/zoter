@@ -44,13 +44,10 @@ req_zotero <- function(query = NULL, output = c("parsed", "raw"), sort = "dateAd
     httr2::req_user_agent("zoter (https://github.com/kleinlennart/zoter)") %>%
     httr2::req_headers(Authorization = paste("Bearer", zoter:::get_api_key())) %>%
     # req_headers(`If-Modified-Since-Version` = zoter:::get_library_version()) %>% # only use for one specific query!!
-    # req_url_query(format = format) %>%
-    # req_url_query(sort = "dateAdded") %>%
     httr2::req_url_query(!!!params) %>%
-    httr2::req_url_query(v = 3) %>% # https://www.zotero.org/support/dev/web_api/v3/start
-    # req_cache(path = "data/cache/", debug = TRUE)
-    # httr2::req_error(is_error = zoter::zoter_errors, body = zoter::zoter_error_body) %>%
-    httr2::req_url_query(limit = 100) # integer 1-100
+    httr2::req_url_query(v = 3) # https://www.zotero.org/support/dev/web_api/v3/start
+  # req_cache(path = "data/cache/", debug = TRUE)
+  # httr2::req_error(is_error = zoter::zoter_errors, body = zoter::zoter_error_body) %>%
 
   usethis::ui_done("Making first request...")
   resp <- req %>% httr2::req_perform(verbosity = as.integer(verbose))
@@ -111,12 +108,10 @@ req_zotero <- function(query = NULL, output = c("parsed", "raw"), sort = "dateAd
       httr2::req_perform()
     responses[[i]] <- resp
 
-
     i <- i + 1
   }
 
-  # Transforming ------------------------------------------------------------
-  # FIXME: outsource to seperate function
+  # Check Results ------------------------------------------------------------
 
   # are there any errors?
   pagination_errors <- responses %>%
