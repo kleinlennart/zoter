@@ -1,4 +1,6 @@
-#
+#' Title
+#' @return
+#' @NoRd
 zoter_output <- function(resp = NULL, output = c("parsed", "raw"), paginated = NULL) {
   if (paginated) {
     if (identical(output, "raw")) {
