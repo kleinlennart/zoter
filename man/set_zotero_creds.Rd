@@ -2,13 +2,10 @@
 % Please edit documentation in R/auth.R
 \name{set_zotero_creds}
 \alias{set_zotero_creds}
-\title{Title}
+\title{Authentication Setup}
 \usage{
 set_zotero_creds()
 }
-\arguments{
-\item{key}{}
-}
 \description{
-Title
+Authentication Setup
 }

@@ -32,6 +32,9 @@ zoter_output <- function(resp = NULL, output = c("parsed", "raw"), paginated = N
 
 # Helper ------------------------------------------------------------------
 
+#' Title
+#' @return
+#' @NoRd
 get_library_version <- function() {
   library_version <- Sys.getenv("ZOTERO_API_libraryVersion")
   if (identical(library_version, "")) {

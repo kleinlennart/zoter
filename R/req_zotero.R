@@ -39,11 +39,11 @@ req_zotero <- function(query = NULL, output = c("parsed", "raw"), sort = "dateAd
   # Make Request ------------------------------------------------------------
   req <- httr2::request("https://api.zotero.org") %>%
     httr2::req_url_path_append("users") %>% # FIXME: or groups
-    httr2::req_url_path_append(zoter::get_api_user()) %>% # FIXME: or group ID
+    httr2::req_url_path_append(zoter:::get_api_user()) %>% # FIXME: or group ID
     httr2::req_url_path_append(query) %>%
     httr2::req_user_agent("zoter (https://github.com/kleinlennart/zoter)") %>%
-    httr2::req_headers(Authorization = paste("Bearer", zoter::get_api_key())) %>%
-    # req_headers(`If-Modified-Since-Version` = zoter::get_library_version()) %>% # only use for one specific query!!
+    httr2::req_headers(Authorization = paste("Bearer", zoter:::get_api_key())) %>%
+    # req_headers(`If-Modified-Since-Version` = zoter:::get_library_version()) %>% # only use for one specific query!!
     # req_url_query(format = format) %>%
     # req_url_query(sort = "dateAdded") %>%
     httr2::req_url_query(!!!params) %>%
@@ -107,7 +107,7 @@ req_zotero <- function(query = NULL, output = c("parsed", "raw"), sort = "dateAd
     }
 
     resp <- httr2::request(next_url) %>% # next_url carries over all other params
-      httr2::req_headers(Authorization = paste("Bearer", zoter::get_api_key())) %>%
+      httr2::req_headers(Authorization = paste("Bearer", zoter:::get_api_key())) %>%
       httr2::req_perform()
     responses[[i]] <- resp
 

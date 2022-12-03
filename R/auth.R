@@ -11,7 +11,7 @@ set_zotero_creds <- function() {
     stop("`set_zotero_creds()` only works in interactive sessions.")
   }
 
-  choice <- utils::menu(c("Yes", "No"), title = "Do you already have your private UserID and sAPI key?")
+  choice <- utils::menu(c("Yes", "No"), title = "Do you already have your private UserID and API key?")
   if (identical(choice, 2L)) { # if No
     usethis::ui_todo("Then get a new private key here: https://www.zotero.org/settings/keys")
     Sys.sleep(1)
@@ -24,11 +24,11 @@ set_zotero_creds <- function() {
     }
   }
 
-  key <- askpass::askpass("Please enter your Zotero API key.")
-  Sys.setenv("ZOTERO_API_KEY" = key)
-
   user_id <- askpass::askpass("Please enter your Zotero userID.")
   Sys.setenv("ZOTERO_API_USER" = user_id)
+
+  key <- askpass::askpass("Please enter your Zotero API key.")
+  Sys.setenv("ZOTERO_API_KEY" = key)
 
   usethis::ui_done("Setup successful!")
 }
@@ -36,6 +36,9 @@ set_zotero_creds <- function() {
 
 # TODO: OAuth
 
+#' Title
+#' @return
+#' @NoRd
 get_api_user <- function() {
   user_id <- Sys.getenv("ZOTERO_API_USER")
   if (identical(user_id, "")) {
@@ -44,6 +47,9 @@ get_api_user <- function() {
   return(user_id)
 }
 
+#' Title
+#' @return
+#' @NoRd
 get_api_key <- function() {
   key <- Sys.getenv("ZOTERO_API_KEY")
   if (identical(key, "")) {
