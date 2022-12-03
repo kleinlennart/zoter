@@ -64,17 +64,21 @@
 </h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
+<p>The goal of {zoter} is to conveniently access the Zotero API v3 from R.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the development version of <strong>{zoter}</strong> like so:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"kleinlennart/zoter"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"kleinlennart/zoter"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="api-example">API Example<a class="anchor" aria-label="anchor" href="#api-example"></a>
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
 </h2>
+<div class="section level3">
+<h3 id="authentication">Authentication<a class="anchor" aria-label="anchor" href="#authentication"></a>
+</h3>
 <p>To access your own private library you will need your <strong>userID</strong> (not your username!) and an <strong>API Key</strong>.<br>
 You can find them here: <a href="https://www.zotero.org/settings/keys/new" class="external-link">https://www.zotero.org/settings/keys</a></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -85,9 +89,13 @@ You can find them here: <a href="https://www.zotero.org/settings/keys/new" class
 <span></span>
 <span><span class="co">## Alternatively you can also set them directly with:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span><span class="st">"ZOTERO_API_USER"</span> <span class="op">=</span> <span class="st">"XXXXX"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span><span class="st">"ZOTERO_API_KEY"</span> <span class="op">=</span> <span class="st">"XXXXX"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Download and parse infos for all top-level items in your library (not notes or attachments)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span><span class="st">"ZOTERO_API_KEY"</span> <span class="op">=</span> <span class="st">"XXXXX"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="example-api-calls">Example API Calls<a class="anchor" aria-label="anchor" href="#example-api-calls"></a>
+</h3>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Download and parse infos for all top-level items in your library</span></span>
 <span><span class="va">items</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_all_items_top.html">get_all_items_top</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## Download and parse infos for all collections in your library</span></span>
@@ -97,15 +105,16 @@ You can find them here: <a href="https://www.zotero.org/settings/keys/new" class
 <span><span class="co">## Use 'req_zotero' for more specific queries</span></span>
 <span><span class="va">trash_keys</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/req_zotero.html">req_zotero</a></span><span class="op">(</span>query <span class="op">=</span> <span class="st">"items/trash"</span>, output <span class="op">=</span> <span class="st">"raw"</span>, format <span class="op">=</span> <span class="st">"keys"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="cleaning">Cleaning<a class="anchor" aria-label="anchor" href="#cleaning"></a>
-</h2>
+<div class="section level3">
+<h3 id="cleaning">Cleaning<a class="anchor" aria-label="anchor" href="#cleaning"></a>
+</h3>
 </div>
-<div class="section level2">
-<h2 id="analysis">Analysis<a class="anchor" aria-label="anchor" href="#analysis"></a>
-</h2>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="section level3">
+<h3 id="analysis">Analysis<a class="anchor" aria-label="anchor" href="#analysis"></a>
+</h3>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plots</span></span></code></pre></div>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
