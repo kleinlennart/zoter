@@ -6,7 +6,7 @@ Author: Who wrote it
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/kleinlennart/zoter
@@ -16,4 +16,15 @@ Suggests:
 Config/testthat/edition: 3
 RoxygenNote: 7.2.1
 Imports: 
-    magrittr
+    askpass,
+    dplyr,
+    httr2,
+    lubridate,
+    magrittr,
+    plyr,
+    progress,
+    purrr,
+    rlang,
+    stringr,
+    tibble,
+    usethis
