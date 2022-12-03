@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# zoter
+# zoter: Zotero API in R
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -17,8 +17,9 @@ devtools::install_github("kleinlennart/zoter")
 
 ## API Example
 
-To access your own private library you will need your userID (not your
-username!) and an API Key. You can find them here:
+To access your own private library you will need your **userID** (not
+your username!) and an **API Key**.  
+You can find them here:
 [https://www.zotero.org/settings/keys](https://www.zotero.org/settings/keys/new)
 
 ``` r
