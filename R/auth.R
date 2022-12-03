@@ -33,8 +33,18 @@ set_zotero_creds <- function() {
   usethis::ui_done("Setup successful!")
 }
 
+# OAuth -------------------------------------------------------------------
 
 # TODO: OAuth
+# client <- httr2::oauth_client(
+#   id = "b3dc85da41c41d57f373",
+#   secret = httr2::obfuscated("Yaz29NgkKXeCbdFWOYCo3c7h07nFcqqBAXK3LCD3-zQpZ7vW"),
+#   token_url = "https://www.zotero.org/oauth/access",
+#   name = "zoter-oauth-test"
+# )
+
+
+# API Helper --------------------------------------------------------------
 
 #' Title
 #' @return
