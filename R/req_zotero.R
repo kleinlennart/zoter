@@ -76,7 +76,7 @@ req_zotero <- function(query = NULL, output = c("parsed", "raw"), sort = "dateAd
 
     if (identical(choice, 2L)) {
       usethis::ui_info("Only returning first results.")
-      res <- zoter:::zoter_output(resp, output = output, paginated = FALSE)
+      res <- zoter:::zoter_export(resp, output = output, paginated = FALSE)
       return(res)
     }
   }
@@ -127,7 +127,7 @@ req_zotero <- function(query = NULL, output = c("parsed", "raw"), sort = "dateAd
   # responses %>% map_chr(resp_content_type)
 
   ## Export
-  res <- zoter:::zoter_output(resp = responses, output = output, paginated = TRUE)
+  res <- zoter:::zoter_export(resp = responses, output = output, paginated = TRUE)
   usethis::ui_done("Done!")
   return(res)
 }
