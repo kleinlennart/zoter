@@ -12,9 +12,12 @@
 #' @export
 #'
 #' @examples
-req_zotero <- function(query = NULL, output = c("parsed", "raw"), sort = "dateAdded", format = c("json", "keys"), limit = 100, verbose = FALSE, interactive = FALSE, ...) {
+req_zotero <- function(query = NULL, output = c("parsed", "raw"), sort = "dateAdded", format = c("json", "keys", "versions"), limit = 100, paginate = TRUE, verbose = FALSE, interactive = FALSE, ...) {
   # only for USERS so far!!
   # FIXME: add group
+
+  # TODO: add a max total results instead of pagination
+
 
   # query <- match.arg(query, choices = c(
   #   "collections/top", "collections", "items/top", "items", "items/trash",
@@ -45,11 +48,11 @@ req_zotero <- function(query = NULL, output = c("parsed", "raw"), sort = "dateAd
     httr2::req_headers(Authorization = paste("Bearer", zoter:::get_api_key())) %>%
     # req_headers(`If-Modified-Since-Version` = zoter:::get_library_version()) %>% # only use for one specific query!!
     httr2::req_url_query(!!!params) %>%
-    httr2::req_url_query(v = 3) # https://www.zotero.org/support/dev/web_api/v3/start
-  # req_cache(path = "data/cache/", debug = TRUE)
-  # httr2::req_error(is_error = zoter::zoter_errors, body = zoter::zoter_error_body) %>%
+    httr2::req_headers(`Zotero-API-Version` = 3) %>% # https://www.zotero.org/support/dev/web_api/v3/start
+    # req_cache(path = "data/cache/", debug = TRUE)
+    # httr2::req_error(is_error = zoter::zoter_errors, body = zoter::zoter_error_body) %>%
 
-  usethis::ui_done("Making first request...")
+    usethis::ui_done("Making first request...")
   resp <- req %>% httr2::req_perform(verbosity = as.integer(verbose))
 
   # Error Handling ------------------------------------------------------------
@@ -68,7 +71,7 @@ req_zotero <- function(query = NULL, output = c("parsed", "raw"), sort = "dateAd
   usethis::ui_todo("Total number of items: {usethis::ui_value(headers[['Total-Results']])}")
 
   n_pages <- as.integer(headers[["Total-Results"]]) / 100 # ceiling?, first page already downloaded!
-  estimated_time <- lubridate::dseconds(n_pages * 2.6)
+  estimated_time <- lubridate::dseconds(n_pages * 2)
   usethis::ui_todo("Estimated time of full download: {usethis::ui_value(estimated_time)}")
 
   if (interactive) {
@@ -79,55 +82,63 @@ req_zotero <- function(query = NULL, output = c("parsed", "raw"), sort = "dateAd
       res <- zoter:::zoter_export(resp, output = output, paginated = FALSE)
       return(res)
     }
+
+    paginate <- TRUE
   }
 
   Sys.setenv("ZOTERO_API_libraryVersion" = headers[["Last-Modified-Version"]])
 
   # Pagination ------------------------------------------------------------
 
-  responses <- vector(mode = "list") # undefined length
-  responses[[1]] <- resp
-  i <- 2
+  if (paginate) {
+    responses <- vector(mode = "list") # undefined length
+    responses[[1]] <- resp
+    i <- 2
 
-  usethis::ui_done("Starting pagination...")
-  pb <- progress::progress_bar$new(
-    format = "  Downloading [:bar] :percent in :elapsed",
-    clear = FALSE, width = 75, total = n_pages - 1 # remaining pages
-  )
+    usethis::ui_done("Starting pagination...")
+    pb <- progress::progress_bar$new(
+      format = "  Downloading [:bar] :percent in :elapsed",
+      clear = FALSE, width = 75, total = n_pages - 1 # remaining pages
+    )
 
-  while (!is.null(httr2::resp_link_url(resp, "next"))) {
-    pb$tick() # advance progress bar
-    next_url <- resp %>% httr2::resp_link_url("next")
+    while (!is.null(httr2::resp_link_url(resp, "next"))) {
+      pb$tick() # advance progress bar
+      next_url <- resp %>% httr2::resp_link_url("next")
 
-    if (verbose) {
-      cat("\n", i, "Requesting: ", next_url)
+      if (verbose) {
+        cat("\n", i, "Requesting: ", next_url)
+      }
+
+      resp <- httr2::request(next_url) %>% # next_url carries over all other params
+        httr2::req_headers(Authorization = paste("Bearer", zoter:::get_api_key())) %>%
+        httr2::req_perform()
+      responses[[i]] <- resp
+
+      i <- i + 1
     }
 
-    resp <- httr2::request(next_url) %>% # next_url carries over all other params
-      httr2::req_headers(Authorization = paste("Bearer", zoter:::get_api_key())) %>%
-      httr2::req_perform()
-    responses[[i]] <- resp
+    # Check Results ------------------------------------------------------------
 
-    i <- i + 1
+    # are there any errors?
+    pagination_errors <- responses %>%
+      purrr::map_lgl(httr2::resp_is_error) %>%
+      any()
+
+    if (pagination_errors) {
+      return(responses)
+      stop("There war an error in one of the responses. Returning unfinished results.")
+    }
+
+    # status <- responses %>% map_int(resp_status)
+    # responses %>% map_chr(resp_content_type)
+
+    ## Export
+    res <- zoter:::zoter_export(resp = responses, output = output, paginated = TRUE)
+    usethis::ui_done("Done!")
+    return(res)
+  } else {
+    usethis::ui_info("Only returning first results.")
+    res <- zoter:::zoter_export(resp, output = output, paginated = FALSE)
+    return(res)
   }
-
-  # Check Results ------------------------------------------------------------
-
-  # are there any errors?
-  pagination_errors <- responses %>%
-    purrr::map_lgl(httr2::resp_is_error) %>%
-    any()
-
-  if (pagination_errors) {
-    return(responses)
-    stop("There war an error in one of the responses. Returning unfinished results.")
-  }
-
-  # status <- responses %>% map_int(resp_status)
-  # responses %>% map_chr(resp_content_type)
-
-  ## Export
-  res <- zoter:::zoter_export(resp = responses, output = output, paginated = TRUE)
-  usethis::ui_done("Done!")
-  return(res)
 }

@@ -4,7 +4,7 @@
 \name{zoter-package}
 \alias{zoter}
 \alias{zoter-package}
-\title{zoter: What the Package Does (Title Case)}
+\title{zoter: Zotero API from R}
 \description{
 More about what it does (maybe more than one line) Use four spaces when indenting paragraphs within the Description.
 }

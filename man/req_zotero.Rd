@@ -8,8 +8,9 @@ req_zotero(
   query = NULL,
   output = c("parsed", "raw"),
   sort = "dateAdded",
-  format = c("json", "keys"),
+  format = c("json", "keys", "versions"),
   limit = 100,
+  paginate = TRUE,
   verbose = FALSE,
   interactive = FALSE,
   ...
